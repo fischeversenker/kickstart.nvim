@@ -113,5 +113,27 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- JavaScript config
+    require('dap').adapters['pwa-node'] = {
+      type = 'server',
+      host = 'localhost',
+      port = '${port}',
+      executable = {
+        command = 'node',
+        args = { '/usr/share/nvim/daps/js-debug/src/dapDebugServer.js', '${port}' },
+      },
+    }
+
+    require('dap').configurations.javascript = {
+      {
+        type = 'pwa-node',
+        request = 'attach',
+        name = 'Attach',
+        processId = require('dap.utils').pick_process,
+        cwd = '${workspaceFolder}',
+        sourceMaps = true,
+      },
+    }
   end,
 }
